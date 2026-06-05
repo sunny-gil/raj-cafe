@@ -86,18 +86,22 @@ export default function OrderForm({ cart, onRemoveItem, onClearCart, showToast, 
     messageText += `===============================\n`;
     messageText += `Thank you! Looking forward to your delicious treats. ❤️`;
 
-    // Construct order object for website Order History
+    // Format target phone number entered by user
+    const rawPhone = formData.phone.trim().replace(/\D/g, '');
+    const formattedPhone = rawPhone.length === 10 ? `91${rawPhone}` : rawPhone;
+
+    // Construct order object for website Order History (Initial status: Pending)
     const newOrder = {
       id: `order-${Date.now()}`,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
       customerName: formData.name.trim(),
-      phone: formData.phone.trim(),
+      phone: formattedPhone,
       deliveryDate: formData.date,
       notes: formData.notes.trim(),
       address: `${formData.address.trim()}, Pincode: ${formData.pincode.trim()}`,
       items: [...cart],
       total: total,
-      status: 'Inquiry Dispatched'
+      status: 'Pending Confirmation'
     };
 
     // Save order in history
@@ -105,11 +109,11 @@ export default function OrderForm({ cart, onRemoveItem, onClearCart, showToast, 
       onAddOrder(newOrder);
     }
 
-    // Redirect to WhatsApp
+    // Redirect to WhatsApp using the phone number entered in the form
     const encodedText = encodeURIComponent(messageText);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=918412915125&text=${encodedText}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodedText}`;
     
-    showToast('Redirecting to WhatsApp with acquisition details...');
+    showToast(`Opening WhatsApp chat with +${formattedPhone}...`);
     window.open(whatsappUrl, '_blank');
 
     // Reset Form

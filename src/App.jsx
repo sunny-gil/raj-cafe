@@ -36,6 +36,17 @@ export default function App() {
     });
   };
 
+  const handleConfirmOrder = (orderId) => {
+    setOrders(prevOrders => {
+      const nextOrders = prevOrders.map(order => 
+        order.id === orderId ? { ...order, status: 'Confirmed' } : order
+      );
+      localStorage.setItem('rajcafe_orders', JSON.stringify(nextOrders));
+      showToast('Order confirmed and moved to active orders! ✓');
+      return nextOrders;
+    });
+  };
+
   const handleClearHistory = () => {
     setOrders([]);
     localStorage.removeItem('rajcafe_orders');
@@ -203,6 +214,7 @@ export default function App() {
             orders={orders} 
             onClearHistory={handleClearHistory} 
             setCurrentPage={setCurrentPage} 
+            onConfirmOrder={handleConfirmOrder}
           />
         );
 

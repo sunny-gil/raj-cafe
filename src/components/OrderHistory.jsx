@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function OrderHistory({ orders, onClearHistory, setCurrentPage }) {
+export default function OrderHistory({ orders, onClearHistory, setCurrentPage, onConfirmOrder }) {
   const formatWhatsAppMessage = (order) => {
     let messageText = `*RajCafe - Pre-Order Inquiry*\n`;
     messageText += `===============================\n\n`;
@@ -33,18 +33,21 @@ export default function OrderHistory({ orders, onClearHistory, setCurrentPage })
 
   const handleReSendWhatsApp = (order) => {
     const encodedText = formatWhatsAppMessage(order);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=918412915125&text=${encodedText}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${order.phone}&text=${encodedText}`;
     window.open(whatsappUrl, '_blank');
   };
+
+  const pendingOrders = orders.filter(o => o.status === 'Pending Confirmation');
+  const confirmedOrders = orders.filter(o => o.status === 'Confirmed');
 
   return (
     <section className="section-padding" style={{ paddingTop: '120px' }}>
       <div className="container animate-fade-in-up">
         {/* Section Header */}
         <div className="section-header">
-          <span className="gold-badge">Order History</span>
+          <span className="gold-badge">Order Dashboard</span>
           <h2>Your Acquisitions</h2>
-          <p>Review and track your bespoke chocolate box curations and artisan bakery reservations.</p>
+          <p>Review, verify, and confirm your custom chocolate curations and boulangerie requests.</p>
         </div>
 
         {orders.length === 0 ? (
@@ -63,87 +66,140 @@ export default function OrderHistory({ orders, onClearHistory, setCurrentPage })
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', maxWidth: '800px', margin: '0 auto' }}>
             
-            {/* Orders List */}
-            {orders.map((order) => (
-              <div key={order.id} className="glass-panel" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '15px', border: '1px solid var(--border-color-gold)' }}>
-                {/* Header Row */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', gap: '10px' }}>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ACQUISITION ID:</span>
-                    <h4 style={{ fontFamily: 'var(--font-family-sans)', fontWeight: 700, fontSize: '1.05rem', color: 'var(--text-primary)' }}>
-                      #{order.id.split('-')[1].toUpperCase()}
-                    </h4>
-                  </div>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>PLACED ON:</span>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{order.date}</div>
-                  </div>
-                  <div>
-                    <span className="tag-label" style={{ backgroundColor: 'var(--accent-berry-light)', color: 'var(--accent-berry)', fontWeight: 600, fontSize: '0.75rem', padding: '4px 10px' }}>
-                      {order.status}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Items List */}
-                <div>
-                  <h5 style={{ fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05rem', marginBottom: '8px', color: 'var(--text-secondary)' }}>Curated Items:</h5>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {order.items.map((item, index) => (
-                      <div key={index} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
-                        <span>
-                          {item.emoji} <strong>{item.name}</strong> x {item.quantity || 1}
+            {/* 1. Pending Confirmations Section */}
+            {pendingOrders.length > 0 && (
+              <div>
+                <h3 style={{ fontFamily: 'var(--font-family-serif)', fontSize: '1.6rem', textAlign: 'left', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-primary)' }}>
+                  ⏳ Pending WhatsApp Confirmation <span className="tag-label" style={{ backgroundColor: 'var(--accent-berry-light)', color: 'var(--accent-berry)' }}>{pendingOrders.length}</span>
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {pendingOrders.map((order) => (
+                    <div key={order.id} className="glass-panel" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '15px', border: '1px dashed var(--accent-gold)' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', gap: '10px' }}>
+                        <div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>ACQUISITION ID:</span>
+                          <h4 style={{ fontFamily: 'var(--font-family-sans)', fontWeight: 700, fontSize: '0.95rem' }}>#{order.id.split('-')[1].toUpperCase()}</h4>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>PLACED ON:</span>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{order.date}</div>
+                        </div>
+                        <span className="tag-label" style={{ backgroundColor: 'rgba(212, 175, 55, 0.15)', color: '#b38728', fontWeight: 600, fontSize: '0.75rem', padding: '4px 10px' }}>
+                          Waiting for Confirmation
                         </span>
-                        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>₹{item.price * (item.quantity || 1)}</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
 
-                {/* Grid of details */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', backgroundColor: 'var(--bg-secondary)', padding: '15px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                  <div>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Recipient:</strong>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 500, marginTop: '2px' }}>{order.customerName}</div>
-                  </div>
-                  <div>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>WhatsApp:</strong>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 500, marginTop: '2px' }}>{order.phone}</div>
-                  </div>
-                  <div>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Target Delivery:</strong>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 500, marginTop: '2px' }}>{order.deliveryDate}</div>
-                  </div>
-                  <div style={{ gridColumn: '1 / -1' }}>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Destination Destination:</strong>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 500, marginTop: '2px', lineHeight: '1.4' }}>{order.address}</div>
-                  </div>
-                  {order.notes && order.notes.trim() && (
-                    <div style={{ gridColumn: '1 / -1' }}>
-                      <strong style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Special Instructions:</strong>
-                      <div style={{ fontSize: '0.85rem', fontStyle: 'italic', marginTop: '2px', color: 'var(--text-secondary)' }}>"{order.notes}"</div>
+                      {/* Items */}
+                      <div style={{ fontSize: '0.9rem' }}>
+                        {order.items.map((item, idx) => (
+                          <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                            <span>{item.emoji} {item.name} x {item.quantity || 1}</span>
+                            <span style={{ fontWeight: 600 }}>₹{item.price * (item.quantity || 1)}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Details Summary */}
+                      <div style={{ fontSize: '0.82rem', padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: '4px', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
+                        <div><strong>Contact Phone:</strong> +{order.phone}</div>
+                        <div style={{ marginTop: '2px' }}><strong>Destination:</strong> {order.address}</div>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+                        <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--accent-berry)' }}>Total: ₹{order.total}</span>
+                        
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button 
+                            onClick={() => handleReSendWhatsApp(order)}
+                            className="btn-outline"
+                            style={{ padding: '6px 12px', fontSize: '0.75rem' }}
+                          >
+                            Resend Msg 💬
+                          </button>
+                          <button 
+                            onClick={() => onConfirmOrder(order.id)}
+                            className="btn-gold"
+                            style={{ padding: '6px 14px', fontSize: '0.75rem' }}
+                          >
+                            Confirm Order ✓
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-
-                {/* Footer and Dispatch actions */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '12px', gap: '15px' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-berry)' }}>
-                    Total Value: ₹{order.total}
-                  </div>
-                  
-                  <button 
-                    onClick={() => handleReSendWhatsApp(order)}
-                    className="btn-gold"
-                    style={{ padding: '8px 16px', fontSize: '0.8rem' }}
-                  >
-                    Resend to WhatsApp 💬
-                  </button>
+                  ))}
                 </div>
               </div>
-            ))}
+            )}
+
+            {/* 2. Confirmed Orders Section */}
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-family-serif)', fontSize: '1.6rem', textAlign: 'left', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-primary)' }}>
+                ✓ Confirmed Active Orders <span className="tag-label" style={{ backgroundColor: 'var(--accent-gold-light)', color: 'var(--text-primary)' }}>{confirmedOrders.length}</span>
+              </h3>
+              
+              {confirmedOrders.length === 0 ? (
+                <div className="glass-panel" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  No confirmed orders yet. Once a WhatsApp reservation is confirmed, click "Confirm Order ✓" to move it here.
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {confirmedOrders.map((order) => (
+                    <div key={order.id} className="glass-panel" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '15px', border: '1px solid var(--border-color-gold)' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', gap: '10px' }}>
+                        <div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>ACQUISITION ID:</span>
+                          <h4 style={{ fontFamily: 'var(--font-family-sans)', fontWeight: 700, fontSize: '0.95rem' }}>#{order.id.split('-')[1].toUpperCase()}</h4>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>PLACED ON:</span>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{order.date}</div>
+                        </div>
+                        <span className="tag-label" style={{ backgroundColor: 'var(--accent-gold-light)', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.75rem', padding: '4px 10px' }}>
+                          Confirmed & Under Prep
+                        </span>
+                      </div>
+
+                      {/* Items */}
+                      <div style={{ fontSize: '0.9rem' }}>
+                        {order.items.map((item, idx) => (
+                          <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                            <span>{item.emoji} {item.name} x {item.quantity || 1}</span>
+                            <span style={{ fontWeight: 600 }}>₹{item.price * (item.quantity || 1)}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Details Summary */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.82rem', padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: '4px', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
+                        <div><strong>Recipient:</strong> {order.customerName}</div>
+                        <div><strong>Phone:</strong> +{order.phone}</div>
+                        <div><strong>Delivery Date:</strong> {order.deliveryDate}</div>
+                        <div><strong>Total Value:</strong> ₹{order.total}</div>
+                        <div style={{ gridColumn: '1 / -1', marginTop: '2px' }}><strong>Address:</strong> {order.address}</div>
+                        {order.notes && (
+                          <div style={{ gridColumn: '1 / -1', borderTop: '1px solid var(--border-color)', paddingTop: '4px', marginTop: '4px', fontStyle: 'italic' }}>
+                            "Notes: {order.notes}"
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+                        <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--accent-berry)' }}>Paid: ₹{order.total}</span>
+                        <button 
+                          onClick={() => handleReSendWhatsApp(order)}
+                          className="btn-outline"
+                          style={{ padding: '6px 12px', fontSize: '0.75rem' }}
+                        >
+                          Conntact Customer 💬
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Clear History Panel */}
             <button 
