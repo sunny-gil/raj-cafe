@@ -12,6 +12,7 @@ import Reviews from './components/Reviews';
 import Blogs from './components/Blogs';
 import OrderForm from './components/OrderForm';
 import Footer from './components/Footer';
+import OrderHistory from './components/OrderHistory';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState({ name: 'home', anchor: null, params: {} });
@@ -20,6 +21,26 @@ export default function App() {
     return localStorage.getItem('rajcafe_accessibility') === 'true';
   });
   const [toasts, setToasts] = useState([]);
+  
+  // Custom orders state with local storage synchronization
+  const [orders, setOrders] = useState(() => {
+    const saved = localStorage.getItem('rajcafe_orders');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const handleAddOrder = (newOrder) => {
+    setOrders(prevOrders => {
+      const nextOrders = [newOrder, ...prevOrders];
+      localStorage.setItem('rajcafe_orders', JSON.stringify(nextOrders));
+      return nextOrders;
+    });
+  };
+
+  const handleClearHistory = () => {
+    setOrders([]);
+    localStorage.removeItem('rajcafe_orders');
+    showToast('Cleared your order history successfully.');
+  };
 
   // Sync accessibility mode class to document body
   useEffect(() => {
@@ -145,6 +166,7 @@ export default function App() {
               onRemoveItem={handleRemoveItem}
               onClearCart={handleClearCart}
               showToast={showToast}
+              onAddOrder={handleAddOrder}
             />
           </>
         );
@@ -174,6 +196,15 @@ export default function App() {
 
       case 'blogs':
         return <Blogs />;
+
+      case 'orders':
+        return (
+          <OrderHistory 
+            orders={orders} 
+            onClearHistory={handleClearHistory} 
+            setCurrentPage={setCurrentPage} 
+          />
+        );
 
       default:
         return (

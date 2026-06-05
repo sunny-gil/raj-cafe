@@ -90,6 +90,15 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
               The Journal
             </a>
           </li>
+          <li>
+            <a 
+              href="#orders" 
+              onClick={(e) => handleNavClick(e, 'orders')} 
+              className={`nav-link ${currentPage.name === 'orders' ? 'active' : ''}`}
+            >
+              Orders
+            </a>
+          </li>
         </ul>
 
         {/* Actions (Accessibility & Cart) */}
@@ -137,6 +146,7 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
           <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="nav-link">Our Heritage</a>
           <a href="#reviews" onClick={(e) => handleNavClick(e, 'reviews')} className="nav-link">Reviews</a>
           <a href="#blogs" onClick={(e) => handleNavClick(e, 'blogs')} className="nav-link">The Journal</a>
+          <a href="#orders" onClick={(e) => handleNavClick(e, 'orders')} className="nav-link">Orders</a>
         </div>
       )}
     </nav>
