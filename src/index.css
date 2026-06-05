@@ -1764,5 +1764,19 @@ html, body {
   }
 }
 
+/* Reviews Dashboard Grid 3-column Layout */
+.reviews-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 992px) {
+  .reviews-dashboard-grid {
+    grid-template-columns: 0.7fr 0.9fr 1.4fr !important;
+  }
+}
+
+
 
 

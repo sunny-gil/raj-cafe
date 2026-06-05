@@ -39,7 +39,7 @@ const REVIEWS_DATA = [
     tag: 'bakery',
     date: 'June 03, 2026',
     comment: 'The hazelnut praline bonbons are an absolute masterpiece. The tempering is perfect, the gold leaf dust looks ultra-premium, and they pair wonderfully with my dark espresso.',
-    itemRef: 'Hazelnut Praline Bonbons'
+    itemRef: 'Artisanal Dark Truffles'
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const REVIEWS_DATA = [
     tag: 'elderly',
     date: 'May 20, 2026',
     comment: 'As a nutritionist, I am highly impressed by their sugar-free almond bars. Sweetened with stevia and made with pure cacao butter, it is a healthy treat I frequently recommend to diabetic seniors.',
-    itemRef: 'Sugar-Free Almond Bar'
+    itemRef: 'Sugar-Free Almond & Raisin Bar'
   },
   {
     id: 6,
@@ -65,10 +65,89 @@ const REVIEWS_DATA = [
 
 export default function Reviews() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [successMessage, setSuccessMessage] = useState('');
+  
+  // Initialize reviews from localStorage (custom reviews) combined with static data
+  const [reviews, setReviews] = useState(() => {
+    const saved = localStorage.getItem('rajcafe_reviews');
+    if (saved) {
+      try {
+        const customReviews = JSON.parse(saved);
+        return [...customReviews, ...REVIEWS_DATA];
+      } catch (e) {
+        console.error("Failed to parse saved reviews:", e);
+        return REVIEWS_DATA;
+      }
+    }
+    return REVIEWS_DATA;
+  });
+
+  // Form State
+  const [formData, setFormData] = useState({
+    name: '',
+    avatar: '👑',
+    rating: 5,
+    tag: 'family',
+    comment: '',
+    itemRef: 'Artisanal Dark Truffles'
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!formData.name.trim()) {
+      alert('Please enter your name.');
+      return;
+    }
+    if (!formData.comment.trim()) {
+      alert('Please write a review comment.');
+      return;
+    }
+
+    const newReview = {
+      id: `custom-review-${Date.now()}`,
+      name: formData.name.trim(),
+      avatar: formData.avatar,
+      rating: Number(formData.rating),
+      tag: formData.tag,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+      comment: formData.comment.trim(),
+      itemRef: formData.itemRef
+    };
+
+    // Add new review at the very top of the list
+    const updatedReviews = [newReview, ...reviews];
+    setReviews(updatedReviews);
+
+    // Persist only custom reviews to localStorage
+    const saved = localStorage.getItem('rajcafe_reviews');
+    const customReviews = saved ? JSON.parse(saved) : [];
+    localStorage.setItem('rajcafe_reviews', JSON.stringify([newReview, ...customReviews]));
+
+    // Reset Form
+    setFormData({
+      name: '',
+      avatar: '👑',
+      rating: 5,
+      tag: 'family',
+      comment: '',
+      itemRef: 'Artisanal Dark Truffles'
+    });
+
+    setSuccessMessage('Thank you! Your boutique review has been published.');
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 4000);
+  };
 
   const filteredReviews = activeFilter === 'all'
-    ? REVIEWS_DATA
-    : REVIEWS_DATA.filter(r => r.tag === activeFilter);
+    ? reviews
+    : reviews.filter(r => r.tag === activeFilter);
 
   return (
     <section className="section-padding" style={{ paddingTop: '120px' }}>
@@ -80,37 +159,37 @@ export default function Reviews() {
           <p>Read honest reviews from our neighborhood families, kids, and beloved grandparents who enjoy our fresh cafe creations.</p>
         </div>
 
-        {/* Review Stats Dashboard */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '30px', marginBottom: '50px' }} className="detail-layout-grid">
+        {/* Review Stats Dashboard & Submission Form */}
+        <div className="reviews-dashboard-grid" style={{ marginBottom: '50px' }}>
           
           {/* Average Rating Panel */}
           <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '30px' }}>
-            <span style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-secondary)' }}>AVERAGE RATING</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>AVERAGE RATING</span>
             <span style={{ fontSize: '4.5rem', fontWeight: 800, color: 'var(--accent-berry)', fontFamily: 'var(--font-family-serif)', lineHeight: '1.1' }}>4.9</span>
             <span style={{ fontSize: '1.5rem', color: 'var(--accent-gold)' }}>★★★★★</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '8px' }}>Based on 140+ home orders</span>
+            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '8px' }}>Based on 140+ verified guests</span>
           </div>
 
           {/* Rating Bars Panel */}
-          <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', gap: '12px', padding: '25px var(--spacing-md)' }}>
+          <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '12px', padding: '25px var(--spacing-sm)' }}>
             <h4 style={{ fontFamily: 'var(--font-family-sans)', fontWeight: 700, fontSize: '1.1rem', textAlign: 'left', marginBottom: '8px' }}>Review Summary</h4>
             
             {/* 5 Stars */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <span style={{ width: '60px', fontSize: '0.9rem', textAlign: 'left', fontWeight: 500 }}>5 Star</span>
               <div style={{ flexGrow: 1, height: '8px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
-                <div style={{ width: '92%', height: '100%', backgroundColor: 'var(--accent-gold)' }}></div>
+                <div style={{ width: '94%', height: '100%', backgroundColor: 'var(--accent-gold)' }}></div>
               </div>
-              <span style={{ width: '40px', fontSize: '0.9rem', textAlign: 'right', fontWeight: 600 }}>92%</span>
+              <span style={{ width: '40px', fontSize: '0.9rem', textAlign: 'right', fontWeight: 600 }}>94%</span>
             </div>
 
             {/* 4 Stars */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <span style={{ width: '60px', fontSize: '0.9rem', textAlign: 'left', fontWeight: 500 }}>4 Star</span>
               <div style={{ flexGrow: 1, height: '8px', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
-                <div style={{ width: '7%', height: '100%', backgroundColor: 'var(--accent-gold)' }}></div>
+                <div style={{ width: '5%', height: '100%', backgroundColor: 'var(--accent-gold)' }}></div>
               </div>
-              <span style={{ width: '40px', fontSize: '0.9rem', textAlign: 'right', fontWeight: 600 }}>7%</span>
+              <span style={{ width: '40px', fontSize: '0.9rem', textAlign: 'right', fontWeight: 600 }}>5%</span>
             </div>
 
             {/* 3 Stars */}
@@ -122,6 +201,140 @@ export default function Reviews() {
               <span style={{ width: '40px', fontSize: '0.9rem', textAlign: 'right', fontWeight: 600 }}>1%</span>
             </div>
           </div>
+
+          {/* Submit Review Form Card */}
+          <div className="glass-panel" style={{ padding: '25px', textAlign: 'left' }}>
+            <h4 style={{ fontFamily: 'var(--font-family-serif)', fontSize: '1.25rem', marginBottom: '15px', color: 'var(--text-primary)' }}>Share Your Experience</h4>
+            
+            {successMessage && (
+              <div style={{ padding: '10px 15px', backgroundColor: 'var(--accent-gold-light)', borderLeft: '4px solid var(--accent-gold)', color: 'var(--text-primary)', fontSize: '0.9rem', borderRadius: '4px', marginBottom: '15px', fontWeight: 500 }}>
+                ✨ {successMessage}
+              </div>
+            )}
+
+            <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '10px' }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="rev-name" style={{ fontSize: '0.8rem' }}>Your Name</label>
+                  <input
+                    type="text"
+                    id="rev-name"
+                    name="name"
+                    placeholder="Enter name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="form-control"
+                    style={{ padding: '8px 12px', fontSize: '0.9rem' }}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="rev-avatar" style={{ fontSize: '0.8rem' }}>Avatar Emoji</label>
+                  <select
+                    id="rev-avatar"
+                    name="avatar"
+                    value={formData.avatar}
+                    onChange={handleInputChange}
+                    className="form-control"
+                    style={{ padding: '8px 12px', fontSize: '0.9rem' }}
+                  >
+                    <option value="👑">👑 Gold</option>
+                    <option value="👦">👦 Boy</option>
+                    <option value="👴">👴 Elder</option>
+                    <option value="👩">👩 Lady</option>
+                    <option value="👨">👨 Gentleman</option>
+                    <option value="👩‍⚕️">👩‍⚕️ Doctor</option>
+                    <option value="✨">✨ Sparkle</option>
+                    <option value="🧁">🧁 Muffin</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="rev-rating" style={{ fontSize: '0.8rem' }}>Rating</label>
+                  <select
+                    id="rev-rating"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleInputChange}
+                    className="form-control"
+                    style={{ padding: '8px 12px', fontSize: '0.9rem' }}
+                  >
+                    <option value="5">★★★★★ (5/5)</option>
+                    <option value="4">★★★★☆ (4/5)</option>
+                    <option value="3">★★★☆☆ (3/5)</option>
+                    <option value="2">★★☆☆☆ (2/5)</option>
+                    <option value="1">★☆☆☆☆ (1/5)</option>
+                  </select>
+                </div>
+                
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="rev-tag" style={{ fontSize: '0.8rem' }}>Category Tag</label>
+                  <select
+                    id="rev-tag"
+                    name="tag"
+                    value={formData.tag}
+                    onChange={handleInputChange}
+                    className="form-control"
+                    style={{ padding: '8px 12px', fontSize: '0.9rem' }}
+                  >
+                    <option value="family">Family & Parties 👩‍👩‍👦</option>
+                    <option value="elderly">Seniors Choice 👵</option>
+                    <option value="kids">Kids Corner 👦</option>
+                    <option value="bakery">Boulangerie & Pastry 🥐</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label" htmlFor="rev-itemRef" style={{ fontSize: '0.8rem' }}>Select Product</label>
+                <select
+                  id="rev-itemRef"
+                  name="itemRef"
+                  value={formData.itemRef}
+                  onChange={handleInputChange}
+                  className="form-control"
+                  style={{ padding: '8px 12px', fontSize: '0.9rem' }}
+                >
+                  <option value="Artisanal Dark Truffles">Artisanal Dark Truffles</option>
+                  <option value="Pistachio Saffron Gold Truffles">Pistachio Saffron Gold Truffles</option>
+                  <option value="Exotic International Fruit Bonbons">Exotic International Fruit Bonbons</option>
+                  <option value="Sugar-Free Almond & Raisin Bar">Sugar-Free Almond & Raisin Bar</option>
+                  <option value="Belgian Candied Orange Slice">Belgian Candied Orange Slice</option>
+                  <option value="Rustic Sourdough Loaf">Rustic Sourdough Loaf</option>
+                  <option value="Golden Butter Croissant">Golden Butter Croissant</option>
+                  <option value="Melty Choco-Chip Cookies">Melty Choco-Chip Cookies</option>
+                  <option value="Bespoke Chocolate Box">Bespoke Chocolate Box</option>
+                </select>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label" htmlFor="rev-comment" style={{ fontSize: '0.8rem' }}>Your Review</label>
+                <textarea
+                  id="rev-comment"
+                  name="comment"
+                  placeholder="Tell us what you loved about our treats..."
+                  value={formData.comment}
+                  onChange={handleInputChange}
+                  className="form-control"
+                  style={{ padding: '8px 12px', fontSize: '0.85rem', minHeight: '60px', resize: 'vertical' }}
+                  required
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn-gold" 
+                style={{ width: '100%', justifyContent: 'center', padding: '10px', fontSize: '0.9rem', marginTop: '5px' }}
+              >
+                Publish Review ✨
+              </button>
+            </form>
+          </div>
+
         </div>
 
         {/* Filters */}
@@ -130,7 +343,7 @@ export default function Reviews() {
           <button onClick={() => setActiveFilter('kids')} className={`tab-btn ${activeFilter === 'kids' ? 'active' : ''}`}>Kids Corner 👦</button>
           <button onClick={() => setActiveFilter('elderly')} className={`tab-btn ${activeFilter === 'elderly' ? 'active' : ''}`}>Seniors Choice 👵</button>
           <button onClick={() => setActiveFilter('family')} className={`tab-btn ${activeFilter === 'family' ? 'active' : ''}`}>Family & Parties 👩‍👩‍👦</button>
-          <button onClick={() => setActiveFilter('bakery')} className={`tab-btn ${activeFilter === 'bakery' ? 'active' : ''}`}>Coffee & Bakery Pairs ☕</button>
+          <button onClick={() => setActiveFilter('bakery')} className={`tab-btn ${activeFilter === 'bakery' ? 'active' : ''}`}>Boulangerie & Pastry 🥐</button>
         </div>
 
         {/* Reviews Cards Grid */}
