@@ -76,7 +76,7 @@ const PREPARATION_STEPS_MAP = {
 
 export default function ProductDetail({ product, onBackClick, onAddToOrder }) {
   const videoUrl = PRODUCT_PREPARATION_VIDEOS[product.id] || PRODUCT_PREPARATION_VIDEOS.p1;
-  const ingredients = INGREDIENTS_MAP[product.id] || ['Premium organic ingredients', 'Hand-sourced raw materials'];
+  const ingredients = product.ingredients || INGREDIENTS_MAP[product.id] || ['Premium organic ingredients', 'Hand-sourced raw materials'];
   const prepSteps = PREPARATION_STEPS_MAP[product.id] || ['Carefully mixed and prepared', 'Baked at optimal temperatures'];
 
   return (

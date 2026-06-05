@@ -10,14 +10,14 @@ export default function Hero({ onExploreClick, onBuildClick }) {
           <div className="hero-content animate-fade-in-up">
             <div className="hero-tagline">
               <span className="gold-badge">Est. 2026</span>
-              <span className="gold-badge secondary" style={{ marginLeft: '10px' }}>Pure & Homemade</span>
+              <span className="gold-badge secondary" style={{ marginLeft: '10px' }}>100% Pure, Homemade & Handmade</span>
             </div>
             <h1 className="hero-title">
               Taste the Magic of
               <span>RajCafe</span>
             </h1>
             <p className="hero-description">
-              Handcrafted with love from our home kitchen. We blend premium dark cocoa and local organic grains to bake gourmet delights perfect for playful kids, health-conscious parents, and beloved grandparents.
+              Luxurious artisanal chocolates & gourmet bakery creations, hand-tempered and freshly baked from our home kitchen. No preservatives, no additives—just pure, honest ingredients.
             </p>
             <div className="hero-actions">
               <button onClick={onExploreClick} className="btn-gold">
@@ -47,7 +47,7 @@ export default function Hero({ onExploreClick, onBuildClick }) {
         </div>
 
         {/* Feature Highlights Grid */}
-        <div className="features-grid">
+        <div className="features-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
           <div className="feature-card">
             <div className="feature-icon-wrapper flex-center">🍫</div>
             <h3>100% Pure Cocoa</h3>
@@ -62,6 +62,11 @@ export default function Hero({ onExploreClick, onBuildClick }) {
             <div className="feature-icon-wrapper flex-center">🌱</div>
             <h3>Healthy & Elder Friendly</h3>
             <p>Special sugar-free chocolates, eggless bakes, and gluten-free breads made with utmost care.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon-wrapper flex-center">🔍</div>
+            <h3>100% Transparency</h3>
+            <p>Every single product comes with a full, honest list of ingredients. No hidden chemicals.</p>
           </div>
         </div>
       </div>
