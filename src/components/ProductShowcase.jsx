@@ -178,14 +178,14 @@ export default function ProductShowcase({ onAddToOrder, onProductClick }) {
                 </div>
                 <p className="product-description">{product.description}</p>
                 <div className="card-ingredients">
-                  <span className="ingredients-label">🌿 Ingredients:</span> {product.ingredients.join(', ')}
+                  <span className="ingredients-label">🌿 Key Ingredients:</span> {product.ingredients.slice(0, 3).join(', ')}...
                 </div>
                 
                 {/* Meta details */}
                 <div className="product-meta">
                   <div className="meta-tags">
                     <span className="tag-label age">{product.ageGroup}</span>
-                    {product.specs.map((spec, i) => (
+                    {product.specs.slice(0, 2).map((spec, i) => (
                       <span key={i} className="tag-label">{spec}</span>
                     ))}
                   </div>
