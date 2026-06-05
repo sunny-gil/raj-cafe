@@ -51,7 +51,7 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
               onClick={(e) => handleNavClick(e, 'products')} 
               className={`nav-link ${currentPage.name === 'products' ? 'active' : ''}`}
             >
-              Menu
+              Collection
             </a>
           </li>
           <li>
@@ -60,7 +60,7 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
               onClick={(e) => handleNavClick(e, 'home', 'builder')} 
               className={`nav-link ${currentPage.anchor === 'builder' ? 'active' : ''}`}
             >
-              Box Builder
+              Bespoke Box
             </a>
           </li>
           <li>
@@ -69,7 +69,7 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
               onClick={(e) => handleNavClick(e, 'about')} 
               className={`nav-link ${currentPage.name === 'about' ? 'active' : ''}`}
             >
-              About Cafe
+              Our Heritage
             </a>
           </li>
           <li>
@@ -87,7 +87,7 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
               onClick={(e) => handleNavClick(e, 'blogs')} 
               className={`nav-link ${currentPage.name === 'blogs' ? 'active' : ''}`}
             >
-              Gourmet Blog
+              The Journal
             </a>
           </li>
         </ul>
@@ -132,11 +132,11 @@ export default function Navbar({ currentPage, setCurrentPage, cartCount, isAcces
       {isMobileMenuOpen && (
         <div className="mobile-nav animate-fade-in-up">
           <a href="#home" onClick={(e) => handleNavClick(e, 'home')} className="nav-link">Home</a>
-          <a href="#products" onClick={(e) => handleNavClick(e, 'products')} className="nav-link">Menu</a>
-          <a href="#builder" onClick={(e) => handleNavClick(e, 'home', 'builder')} className="nav-link">Box Builder</a>
-          <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="nav-link">About Cafe</a>
+          <a href="#products" onClick={(e) => handleNavClick(e, 'products')} className="nav-link">Collection</a>
+          <a href="#builder" onClick={(e) => handleNavClick(e, 'home', 'builder')} className="nav-link">Bespoke Box</a>
+          <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="nav-link">Our Heritage</a>
           <a href="#reviews" onClick={(e) => handleNavClick(e, 'reviews')} className="nav-link">Reviews</a>
-          <a href="#blogs" onClick={(e) => handleNavClick(e, 'blogs')} className="nav-link">Gourmet Blog</a>
+          <a href="#blogs" onClick={(e) => handleNavClick(e, 'blogs')} className="nav-link">The Journal</a>
         </div>
       )}
     </nav>

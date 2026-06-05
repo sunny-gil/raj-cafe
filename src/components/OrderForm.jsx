@@ -79,9 +79,9 @@ export default function OrderForm({ cart, onRemoveItem, onClearCart, showToast }
     <section id="order" className="section-padding order-section">
       <div className="container">
         <div className="section-header">
-          <span className="gold-badge">Place Pre-Order</span>
-          <h2>Inquire & Order Now</h2>
-          <p>Review your selected gourmet items, fill in your details, and place a custom order inquiry directly through WhatsApp. We will confirm your delivery slot immediately.</p>
+          <span className="gold-badge">Bespoke Concierge</span>
+          <h2>Acquire & Customize</h2>
+          <p>Review your curated selection, provide your collection preferences, and dispatch your boutique reservation request directly to our concierge via WhatsApp.</p>
         </div>
 
         <div className="order-grid">
@@ -212,9 +212,9 @@ export default function OrderForm({ cart, onRemoveItem, onClearCart, showToast }
               </div>
 
               <div className="order-summary-box">
-                <h4 style={{ fontFamily: 'var(--font-family-sans)', fontWeight: 700 }}>Ordering Information</h4>
+                <h4 style={{ fontFamily: 'var(--font-family-sans)', fontWeight: 700 }}>Boutique Acquisition Policy</h4>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: 0 }}>
-                  Since all bakes are fresh and homemade, we request a minimum **24-hour notice** for orders. After clicking below, a WhatsApp message will draft with your item list. Simply press send!
+                  As each artisanal creation is hand-tempered and micro-baked on demand, we require a minimum **24-hour lead time** to ensure premium excellence. Clicking below generates a structured manifest for our concierge team.
                 </p>
               </div>
 
@@ -223,7 +223,7 @@ export default function OrderForm({ cart, onRemoveItem, onClearCart, showToast }
                 className="btn-gold" 
                 style={{ width: '100%', justifyContent: 'center', padding: '15px' }}
               >
-                Send Pre-Order via WhatsApp 💬
+                Request Boutique Acquisition 💬
               </button>
             </form>
           </div>

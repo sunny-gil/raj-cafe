@@ -9,22 +9,22 @@ export default function Hero({ onExploreClick, onBuildClick }) {
           {/* Content Column */}
           <div className="hero-content animate-fade-in-up">
             <div className="hero-tagline">
-              <span className="gold-badge">Est. 2026</span>
-              <span className="gold-badge secondary" style={{ marginLeft: '10px' }}>100% Pure, Homemade & Handmade</span>
+              <span className="gold-badge">Chocolatier & Boulangerie</span>
+              <span className="gold-badge secondary" style={{ marginLeft: '10px' }}>Artisanal Craftsmanship</span>
             </div>
             <h1 className="hero-title">
-              Taste the Magic of
-              <span>RajCafe</span>
+              The Art of Pure Chocolate &
+              <span>Bespoke Baking</span>
             </h1>
             <p className="hero-description">
-              Luxurious artisanal chocolates & gourmet bakery creations, hand-tempered and freshly baked from our home kitchen. No preservatives, no additives—just pure, honest ingredients.
+              Meticulously hand-tempered single-origin cacao and slow-fermented organic breads. An elite gastronomic experience crafted with absolute ingredient transparency and zero compromises.
             </p>
             <div className="hero-actions">
               <button onClick={onExploreClick} className="btn-gold">
-                Explore Menu 🍰
+                Discover Collection 🍰
               </button>
               <button onClick={onBuildClick} className="btn-premium">
-                Create Custom Box 🎁
+                Curate Bespoke Box 🎁
               </button>
             </div>
           </div>

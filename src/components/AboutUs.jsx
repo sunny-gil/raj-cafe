@@ -7,9 +7,9 @@ export default function AboutUs() {
       <div className="container animate-fade-in-up">
         {/* Section Header */}
         <div className="section-header">
-          <span className="gold-badge">Since 2026</span>
-          <h2>The RajCafe Story</h2>
-          <p>Handcrafting gourmet bakery delights and tempering artisanal chocolates from our home kitchen in Mumbai.</p>
+          <span className="gold-badge">The Atelier</span>
+          <h2>The Heritage of RajCafe</h2>
+          <p>Meticulously handcrafting luxury chocolate collections and slow-fermented organic breads.</p>
         </div>
 
         {/* Story Intro */}
@@ -22,17 +22,17 @@ export default function AboutUs() {
             />
           </div>
           <div style={{ textAlign: 'left' }}>
-            <h3 style={{ fontFamily: 'var(--font-family-serif)', fontSize: '2rem', marginBottom: '15px' }}>Baking Happiness, One Batch at a Time</h3>
+            <h3 style={{ fontFamily: 'var(--font-family-serif)', fontSize: '2rem', marginBottom: '15px' }}>Gastronomic Integrity, One Batch at a Time</h3>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '15px', fontSize: '1.05rem', lineHeight: '1.7' }}>
-              RajCafe was founded in 2026 by a family of chocolate enthusiasts and bakers who wanted to provide pure, preservative-free, and gourmet alternatives to mass-produced sweets. Every chocolate truffe is hand-tempered, and every loaf of sourdough is slow-fermented for 24 hours.
+              Established in 2026, RajCafe represents the pinnacle of micro-batch confectionery. Born from a dedication to sourcing elite raw materials and reviving ancient slow-fermentation baking techniques, we offer a clean, chemical-free alternative to industrial confectionery.
             </p>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '20px', fontSize: '1.05rem', lineHeight: '1.7' }}>
-              We take pride in our 100% hygienic home-kitchen standards, using organic wheat flour, fresh dairy butter, and single-origin cocoa beans sourced responsibly.
+              Our workshop adheres to international hygiene standards. We exclusively select stone-ground heritage flour, organic grass-fed dairy fats, and sustainably harvested single-origin cocoa beans.
             </p>
             <div style={{ padding: '15px 20px', backgroundColor: 'var(--accent-gold-light)', borderLeft: '4px solid var(--accent-gold)', borderRadius: '0 var(--radius-sm) var(--radius-sm) 0' }}>
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Our Sanitation Guarantee:</span>
+              <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Our Quality Guarantee:</span>
               <p style={{ margin: '5px 0 0 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                FSSAI Registered kitchen, sanitized thrice daily, contact-free packaging, and temperature-controlled delivery.
+                FSSAI Registered kitchen, sanitized thrice daily, contact-free protective packaging, and temperature-controlled white-glove delivery.
               </p>
             </div>
           </div>

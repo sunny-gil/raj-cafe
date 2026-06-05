@@ -47,22 +47,22 @@ export default function OurStory() {
           {/* Text and quote wrapper */}
           <div className="story-text">
             <span className="gold-badge secondary">Since 2026</span>
-            <h3 style={{ marginTop: '10px', fontFamily: 'var(--font-family-serif)' }}>Pure Ingredients. Baked With Love.</h3>
+            <h3 style={{ marginTop: '10px', fontFamily: 'var(--font-family-serif)' }}>Crafted Meticulously. Sourced Globally.</h3>
             
             <p>
-              RajCafe started in our home kitchen with a simple dream: to share the warmth of authentic, home-baked goodies and freshly tempered chocolates with our community.
+              RajCafe was born out of a commitment to culinary excellence—a mission to elevate daily bread and chocolates into an art form.
             </p>
             
             <p>
-              We don't use ready-made premixes, chemical preservatives, or cheap palm oils. From choosing raw organic flour to hand-sorting cocoa beans, we guarantee a pure, clean, and nutritious bite.
+              Our micro-batch workshop rejects industrial compromises. We source rare single-origin cacao from sustainably farmed estates in Ecuador, organic whole grains, and grass-fed Normandy butter, ensuring unmatched purity in every creation.
             </p>
 
             <div className="story-quote">
-              "We believe good food bridges generations. Our recipes are tuned for both children's pure excitement and grandparents' dietary requirements."
+              "We believe gastronomy should bridge generations. Our recipes harmonize complex, deep flavors for gourmands with the gentle dietary needs of our elders."
             </div>
 
             <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-              🍰 Freshly Baked • 🍫 Single-Origin Cocoa • 🍯 Natural Sweeteners Optional • 🥚 100% Eggless Options
+              🥐 Viennoiserie • 🍫 Bean-to-Bar Cacao • 🍯 Stevia & Natural Sweeteners • 🥚 Certified Eggless Range
             </p>
           </div>
         </div>

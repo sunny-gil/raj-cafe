@@ -111,11 +111,11 @@ export default function ProductShowcase({ onAddToOrder, onProductClick }) {
   const [activeTab, setActiveTab] = useState('all');
 
   const filterCategories = {
-    all: 'All Delights',
-    chocolates: 'Classic Chocolates 🍬',
-    dryfruit_choc: 'Dry Fruit Chocolates 🌰',
-    fruit_choc: 'Fruit Chocolates 🍓',
-    bakery: 'Artisan Bakery 🥐'
+    all: 'The Full Collection',
+    chocolates: 'Artisanal Truffles 🍬',
+    dryfruit_choc: 'Exotic Nut Clusters 🌰',
+    fruit_choc: 'Grand Cru Bonbons 🍓',
+    bakery: 'Boulangerie & Pastry 🥐'
   };
 
   const filteredProducts = activeTab === 'all' 
@@ -126,9 +126,9 @@ export default function ProductShowcase({ onAddToOrder, onProductClick }) {
     <section id="products" className="section-padding">
       <div className="container">
         <div className="section-header">
-          <span className="gold-badge">RajCafe Specialties</span>
-          <h2>Our Handcrafted Menu</h2>
-          <p>100% Pure, Homemade & Handmade daily. We select premium natural raw materials. Click <strong>Details 🔍</strong> on any product to see its complete list of pure ingredients and watch how we bake/temper it live!</p>
+          <span className="gold-badge">Gourmet Selection</span>
+          <h2>The Signature Collection</h2>
+          <p>Artisanal micro-batch craft. We source single-origin cacao from Ecuador and organic grains from heritage stone-mills. Click <strong>Details 🔍</strong> to inspect the exact ingredients and observe our master chocolatiers at work.</p>
         </div>
 
         {/* Filter Navigation Tabs */}
